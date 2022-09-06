@@ -14,12 +14,7 @@ function reuqiredInput() {
   });
 }
 
-function checkPassword() {
-  while (password.value != repeatPassword.value) {
-    alert("Password doesnt maatch");
-    password.value = repeatPassword.value = "";
-  }
-}
+const checkPassword = () => password.value === repeatPassword.value;
 
 class User {
   constructor(name, surName, email, password) {
@@ -30,7 +25,7 @@ class User {
   }
 }
 
-function getFormValues() {
+function createUserByFormData() {
   const user1 = new User(
     name.value,
     surName.value,
@@ -41,7 +36,7 @@ function getFormValues() {
 }
 
 function createTable() {
-  const userInfo = getFormValues();
+  const userInfo = createUserByFormData();
   if (exucuted) {
     const tableHeader = `
           <thead >
@@ -60,7 +55,6 @@ function createTable() {
 
   const tableContent = `
               <tr>
-                  
                 <td>${name.value}</td>
                 <td>${surName.value}</td>
                 <td>${email.value}</td>
@@ -68,7 +62,6 @@ function createTable() {
                 <td>
                 <button class="btn btn-danger delete-btn">delete</button>
                 </td>
-
               </tr>
             `;
 
@@ -89,7 +82,7 @@ function deleteTableElem() {
   });
 }
 
-function initFunc() {
+function setInitValueFormInput() {
   formInfo.forEach((i) => (i.value = ""));
 }
 
@@ -97,11 +90,15 @@ function sendForm(e) {
   if (e && e.preventDefault) {
     e.preventDefault();
   }
-  checkPassword();
+  const passwordCorrect = checkPassword();
+  if (!passwordCorrect) {
+    // alert("duz deyil");
+    return;
+  }
   deleteTableElem();
   exucuted = false;
-  initFunc();
+  setInitValueFormInput();
 }
 
-formBlock.addEventListener("submit", sendForm);
 reuqiredInput();
+formBlock.addEventListener("submit", sendForm);
